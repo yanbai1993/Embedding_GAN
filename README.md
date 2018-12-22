@@ -6,6 +6,7 @@ Note that: the complete code for training and testing will be opened in 2019.
 
 ## Requirements
 - pytorch
+- jupyter notebook
 - Linux
 - Python 2 or 3
 - CPU or NVIDIA GPU + CUDA CuDNN
