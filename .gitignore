@@ -1,4 +1,4 @@
 checkpoints
 *.pyc
 results
-
+.txt
