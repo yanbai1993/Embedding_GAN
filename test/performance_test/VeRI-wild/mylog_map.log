@@ -1,0 +1,180 @@
+reset len of vids  30671
+reset len of vids  30671
+=> loading checkpoint 'runs/Soft_trip_Net_0.33_10/checkpoint.pth.tar'
+=> loaded checkpoint 'runs/Soft_trip_Net_0.33_10/checkpoint.pth.tar' (epoch 95)
+Tripletnet(
+  (embeddingnet): VGGM(
+    (conv1): Conv2d(3, 96, kernel_size=(7, 7), stride=(2, 2))
+    (conv2): Conv2d(96, 256, kernel_size=(5, 5), stride=(2, 2), padding=(1, 1))
+    (conv3): Conv2d(256, 512, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+    (conv4): Conv2d(512, 512, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+    (conv5): Conv2d(512, 512, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+    (max_pool1): MaxPool2d(kernel_size=(3, 3), stride=(2, 2), dilation=(1, 1), ceil_mode=False)
+    (max_pool2): MaxPool2d(kernel_size=(3, 3), stride=(2, 2), dilation=(1, 1), ceil_mode=False)
+    (max_pool3): MaxPool2d(kernel_size=(3, 3), stride=(2, 2), dilation=(1, 1), ceil_mode=False)
+    (bn1): BatchNorm2d(96, eps=1e-05, momentum=0.1, affine=True)
+    (bn2): BatchNorm2d(256, eps=1e-05, momentum=0.1, affine=True)
+    (bn3): BatchNorm2d(512, eps=1e-05, momentum=0.1, affine=True)
+    (fc1): Linear(in_features=12800, out_features=4096, bias=True)
+    (fc2): Linear(in_features=4096, out_features=1024, bias=True)
+    (fc3): Linear(in_features=1024, out_features=30671, bias=True)
+    (dropout1): Dropout(p=0.5)
+    (dropout2): Dropout(p=0.5)
+  )
+)
+  + Number of params: 94596367
+Gallery size: 1000
+Gallery feature extraction finished
+============================= ITERATION 1 =============================
+0.545070082097
+Average MAP: 0.545070082097
+reset len of vids  30671
+reset len of vids  30671
+=> loading checkpoint 'runs/Soft_trip_Net_0.33_10/checkpoint.pth.tar'
+=> loaded checkpoint 'runs/Soft_trip_Net_0.33_10/checkpoint.pth.tar' (epoch 95)
+Tripletnet(
+  (embeddingnet): VGGM(
+    (conv1): Conv2d(3, 96, kernel_size=(7, 7), stride=(2, 2))
+    (conv2): Conv2d(96, 256, kernel_size=(5, 5), stride=(2, 2), padding=(1, 1))
+    (conv3): Conv2d(256, 512, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+    (conv4): Conv2d(512, 512, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+    (conv5): Conv2d(512, 512, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+    (max_pool1): MaxPool2d(kernel_size=(3, 3), stride=(2, 2), dilation=(1, 1), ceil_mode=False)
+    (max_pool2): MaxPool2d(kernel_size=(3, 3), stride=(2, 2), dilation=(1, 1), ceil_mode=False)
+    (max_pool3): MaxPool2d(kernel_size=(3, 3), stride=(2, 2), dilation=(1, 1), ceil_mode=False)
+    (bn1): BatchNorm2d(96, eps=1e-05, momentum=0.1, affine=True)
+    (bn2): BatchNorm2d(256, eps=1e-05, momentum=0.1, affine=True)
+    (bn3): BatchNorm2d(512, eps=1e-05, momentum=0.1, affine=True)
+    (fc1): Linear(in_features=12800, out_features=4096, bias=True)
+    (fc2): Linear(in_features=4096, out_features=1024, bias=True)
+    (fc3): Linear(in_features=1024, out_features=30671, bias=True)
+    (dropout1): Dropout(p=0.5)
+    (dropout2): Dropout(p=0.5)
+  )
+)
+  + Number of params: 94596367
+Gallery size: 2000
+Gallery feature extraction finished
+============================= ITERATION 1 =============================
+0.443674416065
+Average MAP: 0.443674416065
+reset len of vids  30671
+reset len of vids  30671
+=> loading checkpoint 'runs/Soft_trip_Net_0.33_10/checkpoint.pth.tar'
+=> loaded checkpoint 'runs/Soft_trip_Net_0.33_10/checkpoint.pth.tar' (epoch 95)
+Tripletnet(
+  (embeddingnet): VGGM(
+    (conv1): Conv2d(3, 96, kernel_size=(7, 7), stride=(2, 2))
+    (conv2): Conv2d(96, 256, kernel_size=(5, 5), stride=(2, 2), padding=(1, 1))
+    (conv3): Conv2d(256, 512, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+    (conv4): Conv2d(512, 512, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+    (conv5): Conv2d(512, 512, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+    (max_pool1): MaxPool2d(kernel_size=(3, 3), stride=(2, 2), dilation=(1, 1), ceil_mode=False)
+    (max_pool2): MaxPool2d(kernel_size=(3, 3), stride=(2, 2), dilation=(1, 1), ceil_mode=False)
+    (max_pool3): MaxPool2d(kernel_size=(3, 3), stride=(2, 2), dilation=(1, 1), ceil_mode=False)
+    (bn1): BatchNorm2d(96, eps=1e-05, momentum=0.1, affine=True)
+    (bn2): BatchNorm2d(256, eps=1e-05, momentum=0.1, affine=True)
+    (bn3): BatchNorm2d(512, eps=1e-05, momentum=0.1, affine=True)
+    (fc1): Linear(in_features=12800, out_features=4096, bias=True)
+    (fc2): Linear(in_features=4096, out_features=1024, bias=True)
+    (fc3): Linear(in_features=1024, out_features=30671, bias=True)
+    (dropout1): Dropout(p=0.5)
+    (dropout2): Dropout(p=0.5)
+  )
+)
+  + Number of params: 94596367
+Gallery size: 3000
+Gallery feature extraction finished
+============================= ITERATION 1 =============================
+0.388695604369
+Average MAP: 0.388695604369
+reset len of vids  30671
+reset len of vids  30671
+=> loading checkpoint 'runs/Soft_trip_Net_0.33_10/checkpoint.pth.tar'
+=> loaded checkpoint 'runs/Soft_trip_Net_0.33_10/checkpoint.pth.tar' (epoch 95)
+Tripletnet(
+  (embeddingnet): VGGM(
+    (conv1): Conv2d(3, 96, kernel_size=(7, 7), stride=(2, 2))
+    (conv2): Conv2d(96, 256, kernel_size=(5, 5), stride=(2, 2), padding=(1, 1))
+    (conv3): Conv2d(256, 512, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+    (conv4): Conv2d(512, 512, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+    (conv5): Conv2d(512, 512, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+    (max_pool1): MaxPool2d(kernel_size=(3, 3), stride=(2, 2), dilation=(1, 1), ceil_mode=False)
+    (max_pool2): MaxPool2d(kernel_size=(3, 3), stride=(2, 2), dilation=(1, 1), ceil_mode=False)
+    (max_pool3): MaxPool2d(kernel_size=(3, 3), stride=(2, 2), dilation=(1, 1), ceil_mode=False)
+    (bn1): BatchNorm2d(96, eps=1e-05, momentum=0.1, affine=True)
+    (bn2): BatchNorm2d(256, eps=1e-05, momentum=0.1, affine=True)
+    (bn3): BatchNorm2d(512, eps=1e-05, momentum=0.1, affine=True)
+    (fc1): Linear(in_features=12800, out_features=4096, bias=True)
+    (fc2): Linear(in_features=4096, out_features=1024, bias=True)
+    (fc3): Linear(in_features=1024, out_features=30671, bias=True)
+    (dropout1): Dropout(p=0.5)
+    (dropout2): Dropout(p=0.5)
+  )
+)
+  + Number of params: 94596367
+Gallery size: 5000
+Gallery feature extraction finished
+============================= ITERATION 1 =============================
+0.330528011955
+Average MAP: 0.330528011955
+reset len of vids  30671
+reset len of vids  30671
+=> loading checkpoint 'runs/Soft_trip_Net_0.33_10/checkpoint.pth.tar'
+=> loaded checkpoint 'runs/Soft_trip_Net_0.33_10/checkpoint.pth.tar' (epoch 95)
+Tripletnet(
+  (embeddingnet): VGGM(
+    (conv1): Conv2d(3, 96, kernel_size=(7, 7), stride=(2, 2))
+    (conv2): Conv2d(96, 256, kernel_size=(5, 5), stride=(2, 2), padding=(1, 1))
+    (conv3): Conv2d(256, 512, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+    (conv4): Conv2d(512, 512, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+    (conv5): Conv2d(512, 512, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+    (max_pool1): MaxPool2d(kernel_size=(3, 3), stride=(2, 2), dilation=(1, 1), ceil_mode=False)
+    (max_pool2): MaxPool2d(kernel_size=(3, 3), stride=(2, 2), dilation=(1, 1), ceil_mode=False)
+    (max_pool3): MaxPool2d(kernel_size=(3, 3), stride=(2, 2), dilation=(1, 1), ceil_mode=False)
+    (bn1): BatchNorm2d(96, eps=1e-05, momentum=0.1, affine=True)
+    (bn2): BatchNorm2d(256, eps=1e-05, momentum=0.1, affine=True)
+    (bn3): BatchNorm2d(512, eps=1e-05, momentum=0.1, affine=True)
+    (fc1): Linear(in_features=12800, out_features=4096, bias=True)
+    (fc2): Linear(in_features=4096, out_features=1024, bias=True)
+    (fc3): Linear(in_features=1024, out_features=30671, bias=True)
+    (dropout1): Dropout(p=0.5)
+    (dropout2): Dropout(p=0.5)
+  )
+)
+  + Number of params: 94596367
+Gallery size: 8000
+Gallery feature extraction finished
+============================= ITERATION 1 =============================
+0.273867439368
+Average MAP: 0.273867439368
+reset len of vids  30671
+reset len of vids  30671
+=> loading checkpoint 'runs/Soft_trip_Net_0.33_10/checkpoint.pth.tar'
+=> loaded checkpoint 'runs/Soft_trip_Net_0.33_10/checkpoint.pth.tar' (epoch 95)
+Tripletnet(
+  (embeddingnet): VGGM(
+    (conv1): Conv2d(3, 96, kernel_size=(7, 7), stride=(2, 2))
+    (conv2): Conv2d(96, 256, kernel_size=(5, 5), stride=(2, 2), padding=(1, 1))
+    (conv3): Conv2d(256, 512, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+    (conv4): Conv2d(512, 512, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+    (conv5): Conv2d(512, 512, kernel_size=(3, 3), stride=(1, 1), padding=(1, 1))
+    (max_pool1): MaxPool2d(kernel_size=(3, 3), stride=(2, 2), dilation=(1, 1), ceil_mode=False)
+    (max_pool2): MaxPool2d(kernel_size=(3, 3), stride=(2, 2), dilation=(1, 1), ceil_mode=False)
+    (max_pool3): MaxPool2d(kernel_size=(3, 3), stride=(2, 2), dilation=(1, 1), ceil_mode=False)
+    (bn1): BatchNorm2d(96, eps=1e-05, momentum=0.1, affine=True)
+    (bn2): BatchNorm2d(256, eps=1e-05, momentum=0.1, affine=True)
+    (bn3): BatchNorm2d(512, eps=1e-05, momentum=0.1, affine=True)
+    (fc1): Linear(in_features=12800, out_features=4096, bias=True)
+    (fc2): Linear(in_features=4096, out_features=1024, bias=True)
+    (fc3): Linear(in_features=1024, out_features=30671, bias=True)
+    (dropout1): Dropout(p=0.5)
+    (dropout2): Dropout(p=0.5)
+  )
+)
+  + Number of params: 94596367
+Gallery size: 10000
+Gallery feature extraction finished
+============================= ITERATION 1 =============================
+0.252231709604
+Average MAP: 0.252231709604
