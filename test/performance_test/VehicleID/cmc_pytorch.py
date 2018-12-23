@@ -7,21 +7,17 @@ import os
 import sys
 import cv2
 import argparse
-from models.VGGM import VGGM
+from models import VGGM
 import torch
 import torchvision.transforms as transforms
 import PIL.Image as Image
 from torch.autograd import Variable
-from models.triplet_loss_model import Tripletnet
-from data.car_dataset import load_triplet_samples, gen_gallery_probe
+
 
 parser = argparse.ArgumentParser(description='CMC')
 parser.add_argument('--feature_layer', dest='feature_layer',
                     default=0, type=int)
 parser.add_argument('--list_file', dest='list_file',
-                    help='test list file',
-                    default='', type=str)
-parser.add_argument('--query_list_file', dest='query_list_file',
                     help='test list file',
                     default='', type=str)
 parser.add_argument('--ext', dest='ext',
@@ -32,7 +28,7 @@ parser.add_argument('--image_dir', dest='image_dir',
                     default='', type=str)
 parser.add_argument('--repeat', dest='repeat',
                     help='repeat times',
-                    default=1, type=int)
+                    default=10, type=int)
 parser.add_argument('--maxg', dest='maxg',
                     help='max number of a class id in gallery',
                     default=1000, type=int)
@@ -41,6 +37,8 @@ parser.add_argument('--save', dest='save',
                     default='', type=str)
 parser.add_argument('--save_dir', dest='save_dir',
                     default='checkpoints/car_cyclegan_VGGM/', type=str)
+parser.add_argument('--which_epoch', dest='which_epoch',
+                    default='latest', type=str)
 parser.add_argument('--im_height', dest='im_height',
                     help = 'im_height',
                     default=224, type=int)
@@ -49,55 +47,77 @@ parser.add_argument('--im_width', dest='im_width',
                     default=224, type=int)
 args = parser.parse_args()
 
+def gen_gallery_probe(samples, k=1):
+    """
+    k: k samples for each id in gallery, 1 for reid
+    TODO: generate gallery and probe sets.
 
-def load_query_reference(imagelist_file,query_file):
+    """
+    cls_ids = samples.keys()
     gallery = {}
     probe = {}
-    for line in open(imagelist_file).readlines():
-        line = line.strip()
-        t = line.split('/')
-        if int(t[0]) not in gallery:
-            gallery[int(t[0])] = []
-        gallery[int(t[0])].append(line)
-    for line in open(query_file).readlines():
-        line = line.strip()
-        t = line.split('/')
-        if int(t[0]) not in probe:
-            probe[int(t[0])] = []
-        probe[int(t[0])].append(line)
+    for cls_id in cls_ids:
+        cls_samples = samples[cls_id]
+        if len(cls_samples)<=1:
+            continue
+        gallery[cls_id] = []
+        probe[cls_id] = []
+        n = len(cls_samples)
+        #  gid = np.random.randint(0, n)
+        gids = np.random.permutation(np.arange(n))[:min(n-1, k)]
+        for i in xrange(len(cls_samples)):
+            if i in gids:
+                gallery[cls_id].append(cls_samples[i])
+            else:
+                probe[cls_id].append(cls_samples[i])
     return gallery, probe
 
-net = VGGM()
-tnet = Tripletnet(net)
-tnet.cuda()
-print("=> loading checkpoint '{}'".format(args.save_dir.strip()))
-checkpoint = torch.load(args.save_dir.strip())
-start_epoch = checkpoint['epoch']
-tnet.load_state_dict(checkpoint['state_dict'])
-print("=> loaded checkpoint '{}' (epoch {})"
-        .format(args.save_dir.strip(), checkpoint['epoch']))
+def load_cls_samples_cls(fname):
+    cls_samples = {}
+    for line in open(fname).readlines():
+        t = line.strip().split()
+        if int(t[1]) not in cls_samples:
+            cls_samples[int(t[1])] = {}
+            cls_samples[int(t[1])][0] = []
+            cls_samples[int(t[1])][1] = []
+        cls_samples[int(t[1])][int(t[2])%2].append(t[0])
+    return cls_samples
 
-tnet.eval()
+def load_cls_samples(fname):
+    cls_samples = {}
+    for line in open(fname).readlines():
+        t = line.strip().split()
+        if int(t[1]) not in cls_samples:
+            cls_samples[int(t[1])] = []
+        cls_samples[int(t[1])].append(t[0])
+    return cls_samples
+
+def load_network(network, network_label, epoch_label):
+    save_filename = '%s_net_%s.pth' % (epoch_label, network_label)
+    save_path = os.path.join(args.save_dir, save_filename)
+    network.load_state_dict(torch.load(save_path))
+
+
+net_ID = VGGM.VGGM()
+load_network(net_ID, 'ID', args.which_epoch)
+net_ID.cuda()
+net_ID.eval()
+
 transform_list = []
 transform_list += [transforms.Scale([args.im_width, args.im_height], Image.BICUBIC)]
 transform_list += [transforms.ToTensor()]
 #transform_list += [transforms.Normalize(mean=[0.485, 0.456, 0.406],std=[0.229, 0.224, 0.225])]
 transform_list += [transforms.Normalize((0.5,0.5,0.5),(0.5,0.5,0.5))]
 transformer = transforms.Compose(transform_list)
-
 ext = args.ext
 length = 1024 
-RANK_LIST = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50]
+RANK_LIST = [1,3, 5,7,9,10,12,14, 16,18, 20,22,24,26,28, 30,32,34,36,38, 40,42,44,46,48, 50]
 
 
 average_rank_rate = np.zeros([len(RANK_LIST), ])
 for r_id in xrange(args.repeat):
-    cls_samples = load_triplet_samples(args.list_file)
+    cls_samples = load_cls_samples(args.list_file)
     gallery, probe = gen_gallery_probe(cls_samples)
-    #print 'gallery', gallery
-    print '____________________________________'
-    #print 'probe', probe
-    #gallery, probe = load_query_reference(args.list_file, args.query_list_file)
     if r_id==0:
         print 'Gallery size: %d' % (len(gallery.keys()))
 
@@ -105,15 +125,17 @@ for r_id in xrange(args.repeat):
     gids = gallery.keys()
     g_feat = np.zeros([len(gids), FEAT_SIZE], dtype=np.float32)
     for i in xrange(len(gids)):
-        img = Image.open(os.path.join(args.image_dir.strip(), gallery[gids[i]][0] + ext))#.convert('RGB')
-        print(gids[i], gallery[gids[i]][0])
+        #input_ = transformer.preprocess(in_, caffe.io.resize_image(caffe.io.load_image(os.path.join(args.image_dir, gallery[gids[i]][0]+ext)), (in_shape[2], in_shape[3])))
+        #out = net.forward_all(**{in_: input_.reshape((1, 3, in_shape[2], in_shape[3]))})
+        #  g_feat[i] = out[args.fc].flatten()
+        img = Image.open(os.path.join(args.image_dir.strip(), gallery[gids[i]][0] + ext)).convert('RGB')
         im = transformer(img)
         im = torch.unsqueeze(im, 0)
         im = im.cuda()
         im = Variable(im)
-        out = net(im)[0]
-        g_feat[i] = torch.squeeze(out, 0).data.cpu().numpy()
-
+        # print(type(im))
+        out = net_ID(im)[args.feature_layer].data
+        g_feat[i] = out
         #  print np.linalg.norm(g_feat[i])
     if r_id==0:
         print 'Gallery feature extraction finished'
@@ -123,7 +145,6 @@ for r_id in xrange(args.repeat):
     for pid in probe:
         for psample in probe[pid]:
             #  gids = gallery.keys()
-            print pid, psample
             g_dist = np.zeros([len(gids),])
             p_feat = np.zeros([FEAT_SIZE,], dtype=np.float32)
             img  = Image.open(os.path.join(args.image_dir.strip(), psample + ext))
@@ -131,8 +152,8 @@ for r_id in xrange(args.repeat):
             im = torch.unsqueeze(im, 0)
             im = im.cuda()
             im = Variable(im)
-            out = net(im)[0]
-            p_feat = torch.squeeze(out, 0).data.cpu().numpy()
+            out = net_ID(im)[args.feature_layer].data
+            p_feat = out
             #input_ = transformer.preprocess(in_, caffe.io.resize_image(caffe.io.load_image(os.path.join(args.image_dir, psample+ext)), (in_shape[2], in_shape[3])))
             #out = net.forward_all(**{in_: input_.reshape((1, 3, in_shape[2], in_shape[3]))})
             #  p_feat = out[args.fc].flatten()
