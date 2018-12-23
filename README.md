@@ -30,3 +30,13 @@ pip install dominate
 git clone https://github.com/yanbai1993/Embedding_GAN.git
 cd Embedding GAN
 ```
+
+###  visualization for hard negative
+Based on Embedding GAN, you can generate hard negative samples. To better illustrate the hard negatives generation procedure, we provided the test code and several models (six models under different training stages). 
+The models can be downloaded from "https://pan.baidu.com/s/1vkmccegB5epCa48C7pANbQ". 
+You need to put the models into 'checkpoints' dir. 
+
+###  performance test
+
+
+
