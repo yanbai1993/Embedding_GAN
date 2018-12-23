@@ -33,9 +33,9 @@ parser.add_argument('--maxg', dest='maxg',
                     default=1000, type=int)
 parser.add_argument('--save', dest='save',
                     help='save to file',
-                    default='map_vggm_compress_2.txt', type=str)
+                    default='map_vggm.txt', type=str)
 parser.add_argument('--save_dir', dest='save_dir',
-                    default='checkpoints/car_cyclegan_VGGM/', type=str)
+                    default='checkpoints/', type=str)
 parser.add_argument('--which_epoch', dest='which_epoch',
                     default='latest', type=str)
 parser.add_argument('--im_height', dest='im_height',
@@ -103,18 +103,15 @@ def gen_gallery_probe_random(samples, k=1):
         
         if(len(samples[cls_id][ext_v]) > 0):
             exts = np.random.randint(0,len(samples[cls_id][ext_v]))
-            #print "ex",cls_samples[ext_v][exts]
             extansion[cls_id].append(cls_samples[ext_v][exts])
         for i in xrange(len(cls_samples[0])):
             if i == pids and pid_v == 0:
                 probe[cls_id].append(cls_samples[0][i])
-                #print "pro",cls_samples[0][i]
             else:
                 gallery[cls_id].append(cls_samples[0][i])
 
         for i in xrange(len(cls_samples[1])):
             if i == pids and  pid_v == 1:
-                #print "pro",cls_samples[1][i]
                 probe[cls_id].append(cls_samples[1][i])
             else:
                 gallery[cls_id].append(cls_samples[1][i])
@@ -140,28 +137,21 @@ def gen_gallery_probe(samples, k=1):
         else:
             pid_v = 1
             pids = pids - len(samples[cls_id][0])
-        #pid_v = np.random.randint(0, 1)
-        #if(len(samples[cls_id][pid_v]) <1):
-        #    pid_v = ext_v
         ext_v = (pid_v + 1)%2
-        #pids = np.random.randint(0,len(samples[cls_id][pid_v]))
         
         if(len(samples[cls_id][ext_v]) > 0):
             exts = np.random.randint(0,len(samples[cls_id][ext_v]))
-            #print "ex",cls_samples[ext_v][exts]
             extansion[cls_id].append(cls_samples[ext_v][exts])
         else:
             extansion[cls_id].append(cls_samples[pid_v][pids])
         for i in xrange(len(cls_samples[0])):
             if i == pids and pid_v == 0:
                 probe[cls_id].append(cls_samples[0][i])
-                #print "pro",cls_samples[0][i]
             else:
                 gallery[cls_id].append(cls_samples[0][i])
 
         for i in xrange(len(cls_samples[1])):
             if i == pids and  pid_v == 1:
-                #print "pro",cls_samples[1][i]
                 probe[cls_id].append(cls_samples[1][i])
             else:
                 gallery[cls_id].append(cls_samples[1][i])
@@ -234,7 +224,6 @@ for r_id in xrange(args.repeat):
         g_n += len(gallery[gid])
     for pid in probe:
         p_n += len(probe[pid])
-    #print g_n,p_n,e_n
     g_feat = np.zeros([g_n, FEAT_SIZE], dtype=np.float32)
     g_ids = np.zeros([g_n, ], dtype=np.float32)
     g_imgs = []
@@ -242,7 +231,6 @@ for r_id in xrange(args.repeat):
     for gid in gallery.keys():
         for s in gallery[gid]:
             img = Image.open(os.path.join(args.image_dir.strip(), s + ext)).convert('RGB')
-            #print img
             im = transformer(img)
             im = torch.unsqueeze(im, 0)
             im = im.cuda()
@@ -283,9 +271,6 @@ for r_id in xrange(args.repeat):
             map_p += (i+1)*1.0/(ind+1)
         map_p /= n
         mean_avg_prec_p[r_id] += map_p
-        #f.write(psample+' ' + str(pid) + '\n')
-        #for i in xrange(0,20):
-        #    f.write(p_sortimg[i]+' '+str(p_sorted[i])+'\n')
 
     mean_avg_prec_p[r_id] /= p_n
     print '============================= ITERATION %d =============================' % (r_id+1)

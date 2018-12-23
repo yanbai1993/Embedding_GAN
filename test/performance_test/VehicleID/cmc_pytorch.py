@@ -36,7 +36,7 @@ parser.add_argument('--save', dest='save',
                     help='save to file',
                     default='', type=str)
 parser.add_argument('--save_dir', dest='save_dir',
-                    default='checkpoints/car_cyclegan_VGGM/', type=str)
+                    default='checkpoints/', type=str)
 parser.add_argument('--which_epoch', dest='which_epoch',
                     default='latest', type=str)
 parser.add_argument('--im_height', dest='im_height',
@@ -63,7 +63,6 @@ def gen_gallery_probe(samples, k=1):
         gallery[cls_id] = []
         probe[cls_id] = []
         n = len(cls_samples)
-        #  gid = np.random.randint(0, n)
         gids = np.random.permutation(np.arange(n))[:min(n-1, k)]
         for i in xrange(len(cls_samples)):
             if i in gids:
@@ -125,18 +124,13 @@ for r_id in xrange(args.repeat):
     gids = gallery.keys()
     g_feat = np.zeros([len(gids), FEAT_SIZE], dtype=np.float32)
     for i in xrange(len(gids)):
-        #input_ = transformer.preprocess(in_, caffe.io.resize_image(caffe.io.load_image(os.path.join(args.image_dir, gallery[gids[i]][0]+ext)), (in_shape[2], in_shape[3])))
-        #out = net.forward_all(**{in_: input_.reshape((1, 3, in_shape[2], in_shape[3]))})
-        #  g_feat[i] = out[args.fc].flatten()
         img = Image.open(os.path.join(args.image_dir.strip(), gallery[gids[i]][0] + ext)).convert('RGB')
         im = transformer(img)
         im = torch.unsqueeze(im, 0)
         im = im.cuda()
         im = Variable(im)
-        # print(type(im))
         out = net_ID(im)[args.feature_layer].data
         g_feat[i] = out
-        #  print np.linalg.norm(g_feat[i])
     if r_id==0:
         print 'Gallery feature extraction finished'
 
@@ -144,7 +138,6 @@ for r_id in xrange(args.repeat):
     cnt = 0
     for pid in probe:
         for psample in probe[pid]:
-            #  gids = gallery.keys()
             g_dist = np.zeros([len(gids),])
             p_feat = np.zeros([FEAT_SIZE,], dtype=np.float32)
             img  = Image.open(os.path.join(args.image_dir.strip(), psample + ext))
@@ -154,15 +147,8 @@ for r_id in xrange(args.repeat):
             im = Variable(im)
             out = net_ID(im)[args.feature_layer].data
             p_feat = out
-            #input_ = transformer.preprocess(in_, caffe.io.resize_image(caffe.io.load_image(os.path.join(args.image_dir, psample+ext)), (in_shape[2], in_shape[3])))
-            #out = net.forward_all(**{in_: input_.reshape((1, 3, in_shape[2], in_shape[3]))})
-            #  p_feat = out[args.fc].flatten()
-            #p_feat = net.blobs[args.fc].data[0].flatten()
 
             for i in xrange(len(gids)):
-                #  input_ = transformer.preprocess(in_, caffe.io.resize_image(caffe.io.load_image(os.path.join(args.image_dir, gallery[gids[i]][0]+ext)), (in_shape[2], in_shape[3])))
-                #  out = net.forward_all(**{in_: input_.reshape((1, 3, in_shape[2], in_shape[3]))})
-                #  g_feat[i] = out[args.fc].flatten()
                 g_dist[i] = np.linalg.norm(g_feat[i]-p_feat)
             g_sorted = [gids[i] for i in g_dist.argsort()]
             for k, r in enumerate(RANK_LIST):
