@@ -1,8 +1,6 @@
 # Embedding_GAN
 Embedding Adversarial Learning for Vehicle Re-Identification
-This code is for the work: ******
 
-Note that: the complete code for training and testing will be opened in 2019. 
 
 ### We provide the embedding network without the adversarial learning, which provide the baseline method in our work. the code can be download from https://github.com/yanbai1993/Embedding-Network. 
 
